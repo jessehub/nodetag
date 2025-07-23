@@ -8,7 +8,7 @@ Tag EKS nodes running in EC2 using annotations defined in the workloads schedule
 
 Billing and resource accounting is not simple in AWS and is even more opaque and complex once kubernetes is being used. Generally EKS nodes are meant to be shared resources where arbitrary workloads are scheduled. However there are cases where really there is only one primary business application being run on a given type of node. This is especially common when a pod requires the use of a single GPU, or one that is highly memory intensive. Another common use-case is a single-tenant service, where only one customer's compute is allowed to be resident on a node.
 
-In this case it is useful to be able to tag an EKS node ec2 instance with the workload being run. The operator provided here looks for annotations in a Pod running on a Node. If the annotations match the unique prefix "chokol.it/nodetag/" then a tag will be applied to the node the pod is running on.
+In this case it is useful to be able to tag an EKS node ec2 instance with the workload being run. The operator provided here looks for annotations in a Pod running on a Node. If the annotations match the unique prefix "nodetag/" then a tag will be applied to the node the pod is running on.
 
 There is no attempt to avoid tag Name conflicts or to delete tags no longer associated with a running pod. When an appropriately prefixed tag Name is observed, then its Value is applied to the node. Plain and simple.
 
@@ -18,6 +18,7 @@ There is no attempt to avoid tag Name conflicts or to delete tags no longer asso
 1. Create IAM role for writing tags
 2. Associate role with a service account in the cluster
 3. Install operator and service account
+4. Add annotations like `nodetag/<ec2 tag key>: <ec2 tag value>` to workload
 
 The basic use case assumes that AWS pod identity is running. This allows the kubernetes service account associated with the operator can assume the IAM role needed for interacting with the AWS API. Once the basic role and policy are verified to be working they can be adjusted to be more restrictive to whatever degree is desired.
 
