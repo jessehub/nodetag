@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.nodeAnnotatorRole.name | quote }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "nodetag.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ .Values.nodeAnnotatorRole.name }}

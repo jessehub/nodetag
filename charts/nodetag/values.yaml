@@ -1,0 +1,74 @@
+# Default values for nodetag.
+
+replicaCount: 1
+
+image:
+  repository: jessehub/nodetag
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  # tag: "null3"
+
+# imagePullSecrets: []
+# nameOverride: ""
+# fullnameOverride: ""
+
+# List of namespaces the operator has permissions to read pod annotations in
+# An empty list denotes all namespaces and renders the templates/podReaderClusterRoleBinding.yaml
+# If the list is populated, then each namespace listed renders an instance of templates/podReaderRoleBinding.yaml
+targetedNamespaces: []
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: "nodetag.operator"
+
+nodeAnnotatorRole:
+  name: "nodetag.node-annotation-patcher"
+
+podReaderRole:
+  name: "nodetag.pod-annotation-reader"
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 4Gi
+  requests:
+    cpu: 100m
+    memory: 4Gi
+
+autoscaling:
+  enabled: false
+
+# Additional volumes on the output Deployment definition.
+# volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+# volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+# nodeSelector: {}
+
+# tolerations: []
+
+# affinity: {}

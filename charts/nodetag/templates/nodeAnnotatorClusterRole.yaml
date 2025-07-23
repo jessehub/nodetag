@@ -1,0 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Values.nodeAnnotatorRole.name | quote }}
+rules:
+  # nodetag: memoization of already written ec2 tags is persisted in node annotations
+- apiGroups: [""]
+  resources: [nodes]
+  verbs: [get, patch]
+# kopf: internal state storage
+- apiGroups: [""]
+  resources: [pods]
+  verbs: [get, watch, patch]
+# kopf: internal state storage
+- apiGroups: [""]
+  resources: [pods/status]
+  verbs: [patch]
+# kopf: knowing which other operators are running (i.e. peering).
+- apiGroups: [kopf.dev]
+  resources: [clusterkopfpeerings]
+  verbs: [list, watch, patch, get]
+# kopf: posting the events about the handlers progress/errors.
+- apiGroups: [""]
+  resources: [events]
+  verbs: [create]
+# kopf: runtime observation of namespaces & CRDs (addition/deletion).
+- apiGroups: [apiextensions.k8s.io]
+  resources: [customresourcedefinitions]
+  verbs: [list, watch]
+- apiGroups: [""]
+  resources: [namespaces]
+  verbs: [list, watch]
+# kopf: admission webhook configuration management.
+- apiGroups: [admissionregistration.k8s.io/v1, admissionregistration.k8s.io/v1beta1]
+  resources: [validatingwebhookconfigurations, mutatingwebhookconfigurations]
+  verbs: [create, patch]

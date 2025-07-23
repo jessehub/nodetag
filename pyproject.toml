@@ -1,0 +1,20 @@
+[project]
+name = "nodetag"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Jesse Callaway", email = "bonsaime@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "boto3>=1.39.8",
+    "kopf>=1.38.0",
+    "kubernetes>=33.1.0",
+    "pytest>=8.4.1",
+    "python-json-logger>=3.3.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

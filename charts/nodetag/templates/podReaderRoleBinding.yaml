@@ -1,0 +1,15 @@
+{{- range .Values.targetedNamespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $.Values.podReaderRole.name | quote }}
+  namespace: {{ . | quote }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "nodetag.serviceAccountName" $ }}
+  namespace: {{ $.Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ $.Values.podReaderRole.name }}
+{{ end }}
